@@ -7,25 +7,39 @@ public:
         while(low<=high){
             int mid=low+(high-low)/2;
             if(nums[mid]==target) return mid;
-            
-            //left sorted
-            if(nums[low]<=nums[mid]){
-                if(nums[low]<=target &&nums[mid]>=target){
-                    high=mid-1;
-                }
-                else{
+            //p2
+            if(nums[mid]>nums[n-1]){
+                if(nums[mid]<target){
+                    //right
                     low=mid+1;
                 }
+                else{
+                    if(nums[0]>target){
+                        //right
+                        low=mid+1;
+                    }
+                    else{
+                        high=mid-1;
+                    }
+                }
             }
-            //right sorted
             else{
-                if(nums[mid]<=target &&nums[high]>=target){
-                    low=mid+1;
-                }
-                else{
+                if(nums[mid]>target){
+                    //left
                     high=mid-1;
                 }
+                else{
+                    if(nums[n-1]<target){
+                        //left
+                        high=mid-1;
+                    }
+                    else{
+                        //right
+                        low=mid+1;
+                    }
+                }
             }
+
         }
         return -1;
     }
