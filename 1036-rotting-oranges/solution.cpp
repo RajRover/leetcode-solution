@@ -1,47 +1,38 @@
 class Solution {
 public:
-    bool valid(int i,int j,int n,int m){
-        if(i<0 || i>=n || j<0 || j>= m) return false;
-        return true;
-    }
+    vector<vector<int>> directions{{-1,0},{1,0},{0,1},{0,-1}};
     int orangesRotting(vector<vector<int>>& grid) {
         queue<pair<int,int>> q;
         int n=grid.size();
         int m=grid[0].size();
         int fresh=0;
-        int time=0;
         for(int i=0;i<n;i++){
             for(int j=0;j<m;j++){
-                if(grid[i][j]==2){
-                    q.push({i,j});
-                    grid[i][j]=-2;
-                }
-                else if(grid[i][j]==1){
-                    fresh++;
-                }
+                if(grid[i][j]==2) q.push({i,j});
+                else if(grid[i][j]==1) fresh++;
             }
         }
-        vector<int> x={-1,1,0,0};
-        vector<int> y={0,0,-1,1};
-        while(!q.empty() && fresh>0){
-            time++;
-            int s=q.size();
-            while(s--){
-                int r=q.front().first;
-                int c=q.front().second;
+        int min=0;
+        while(!q.empty()){
+            int N=q.size();
+            while(N--){
+                int a=q.front().first;
+                int b=q.front().second;
                 q.pop();
-                for(int k=0;k<4;k++){
-                    int row=r+x[k];
-                    int col=c+y[k];
-                    if(valid(row,col,n,m) && grid[row][col]==1){
-                        q.push({row,col});
+                for(auto&v:directions){
+                    int a_new=a+v[0];
+                    int b_new=b+v[1];
+                    if(a_new>=0 && a_new<n && b_new>=0 && b_new<m && grid[a_new][b_new]==1){
+                        grid[a_new][b_new]=2;
+                        q.push({a_new,b_new});
                         fresh--;
-                        grid[row][col]=2;
                     }
+                    else continue;
                 }
             }
+            min++;
         }
-        if(fresh>0) return -1;
-        return time;
+        if(min==0 && fresh==0) return 0;
+        return (fresh==0)?min-1:-1;
     }
 };
