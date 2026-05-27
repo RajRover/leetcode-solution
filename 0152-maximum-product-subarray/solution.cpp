@@ -1,19 +1,19 @@
 class Solution {
 public:
     int maxProduct(vector<int>& nums) {
-        int n=nums.size();
-        int maxend=nums[0];
-        int minend=nums[0];
-        int ans=nums[0];
-        for(int i=1;i<n;i++){
+        int max_best=nums[0];
+        int min_best=nums[0];
+        int ans=max_best;
+        for(int i=1;i<nums.size();i++){
             int v1=nums[i];
-            int v2=minend*nums[i];
-            int v3=maxend*nums[i];
-            minend=min(v1,min(v2,v3));
-            maxend=max(v1,max(v2,v3));
-            ans=max(ans,max(maxend,minend));
+            int v2=nums[i]*max_best;
+            int v3=nums[i]*min_best;
+            max_best=max(v1,v2);
+            max_best=max(max_best,v3);
+            min_best=min(v1,v3);
+            min_best=min(v2,min_best);
+            ans=max(max_best,ans);
         }
         return ans;
-
     }
 };
