@@ -1,25 +1,18 @@
 class Solution {
 public:
     bool checkSubarraySum(vector<int>& nums, int k) {
+        //amodk==(a+k*b)modk
+        unordered_map<int,int>mp;
+        mp[0]=-1;
         int sum=0;
-        unordered_map<int,int> f;
-        int rem=0;
-        int res=0;
-        int cnt=0;
         for(int i=0;i<nums.size();i++){
             sum+=nums[i];
-            int rem=sum%k;
-            if(rem==0){res=max(i+1,res); continue;}
-            //nhi
-            if(f.find(rem)==f.end()){
-                f[rem]+=i;
+            if(mp.find(sum%k)!=mp.end()){
+                if((i-mp[sum%k])>=2){
+                    return true;}
             }
-            else{
-                int len=i-f[rem];
-                res=max(len,res);
-            }
-            
+            else mp[sum%k]=i;
         }
-        return (res<2)?false:true;
+        return false;
     }
 };
