@@ -1,24 +1,24 @@
 class Solution {
 public:
     int characterReplacement(string s, int k) {
-        vector<int> alphabets(26,0);
-        int n=s.size();
         int low=0;
         int res=0;
-        for(int high=0;high<n;high++){
-            alphabets[s[high]-'A']+=1;
-            int len =high-low+1;
-            int maxcnt=*max_element(alphabets.begin(),alphabets.end());
-            int diff=len-maxcnt;
+        unordered_map<char,int>f;
+        int max_cnt=0;
+        for(int high=0;high<s.size();high++){
+            f[s[high]]++;
+            max_cnt=max(max_cnt, f[s[high]]);
+            int len=high-low+1;
+            int diff=len-max_cnt;
             while(diff>k){
-                alphabets[s[low]-'A']-=1;
+                f[s[low]]--;
+                if(f[s[low]]==0) f.erase(s[low]);
                 low++;
-                len =high-low+1;
-                maxcnt=*max_element(alphabets.begin(),alphabets.end());
-                diff=len-maxcnt;
+                len=high-low+1;
+                diff=len-max_cnt;
             }
-            len =high-low+1;
-            res=max(res,len);
+            len=high-low+1;
+            res=max(len,max_cnt);
         }
         return res;
     }
