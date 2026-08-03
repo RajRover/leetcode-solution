@@ -1,35 +1,33 @@
 class Solution {
 public:
-    int fn(vector<int>& nums, int mid){
-        int n=nums.size();
+    bool possible(int k,int guess,vector<int>& nums){
         int cnt=1;
-        int numbers=0;
-        for(int i=0;i<n;i++){
-            if(nums[i]+numbers<=mid){
-                numbers+=nums[i];
+        int sum=nums[0];
+        for(int i=1;i<nums.size();i++){
+            if(sum+nums[i]<=guess){
+                sum+=nums[i];
+                continue;
             }
-            else{
-                cnt++;
-               numbers=nums[i]; 
-            }
+            cnt++;
+            sum=nums[i];
         }
-        return cnt;
-            }
+        if(cnt>k) return false;
+        return true;
+    }
     int splitArray(vector<int>& nums, int k) {
-        int n=nums.size();
-        if(k>n) return -1;
         int low=*max_element(nums.begin(),nums.end());
         int high=accumulate(nums.begin(),nums.end(),0);
+        int ans=0;
         while(low<=high){
             int mid=low+(high-low)/2;
-            int cnt=fn(nums,mid);
-            if(cnt>k){
-                low=mid+1;
+            if(possible(k,mid,nums)){
+                ans=mid;
+                high=mid-1;     
             }
             else{
-                high=mid-1;
+                low=mid+1;
             }
         }
-        return low;
+        return ans;
     }
 };
