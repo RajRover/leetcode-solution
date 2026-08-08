@@ -1,24 +1,23 @@
 class Solution {
 public:
-    int fn(int n){
+    int sum(int n){
         int sum=0;
-        while(n>0){
-            int d=n%10;
+        while(n){
+            int digit=n%10;
+            sum+=digit*digit;
             n=n/10;
-            sum+=d*d;
         }
         return sum;
     }
     bool isHappy(int n) {
         int slow=n;
-        int fast=n;
-        while(true){
-            slow=fn(slow);
-            fast=fn(fast);
-            fast=fn(fast);
-            if (fast == 1) return true;
+        int fast=slow;
+        while(fast!=1 && sum(fast)!=1){
+            slow=sum(slow);
+            fast=sum(fast);
+            fast=sum(fast);
             if(slow==fast) return false;
         }
-        return true;
+        return slow;
     }
 };
