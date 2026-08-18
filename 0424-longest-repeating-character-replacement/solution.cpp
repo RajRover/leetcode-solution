@@ -17,8 +17,8 @@ public:
                 len=high-low+1;
                 diff=len-max_cnt;
             }
-            len=high-low+1;
-            res=max(len,max_cnt);
+            //len=high-low+1;
+            res=max(len,res);
         }
         return res;
     }
